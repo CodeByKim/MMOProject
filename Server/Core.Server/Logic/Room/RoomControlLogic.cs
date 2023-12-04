@@ -1,10 +1,6 @@
 ﻿using System;
 
-using Core.Server.Connection;
-using Core.Server.Server;
-using Core.Server.Util;
-
-namespace Core.Server.Logic
+namespace Core.Server
 {
     internal class RoomControlLogic<TConnection> : AbstractSystemLogic<TConnection>
         where TConnection : ClientConnection<TConnection>, new()

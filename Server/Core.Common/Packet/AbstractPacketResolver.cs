@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Core.Common.Connection;
 using Google.Protobuf;
 
-namespace Core.Common.Packet
+namespace Core.Common
 {
     public abstract class AbstractPacketResolver<TConnection> where TConnection : BaseConnection
     {

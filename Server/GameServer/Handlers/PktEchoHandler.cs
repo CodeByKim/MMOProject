@@ -1,7 +1,7 @@
 ﻿using System;
 
-using Core.Common.Packet;
-using Core.Server.Util;
+using Core.Common;
+using Core.Server;
 using Google.Protobuf;
 using Protocol;
 

@@ -1,9 +1,8 @@
 ﻿using System;
 
-using Core.Server.Connection;
 using Microsoft.Extensions.ObjectPool;
 
-namespace Core.Server.Util
+namespace Core.Server
 {
     public class ConnectionPooledObjectPolicy<TConnection> : IPooledObjectPolicy<TConnection>
         where TConnection : ClientConnection<TConnection>, new()

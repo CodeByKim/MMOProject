@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 
-namespace Core.Server.Util
+namespace Core.Server
 {
     public class ServerConfig
     {

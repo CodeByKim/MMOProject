@@ -2,11 +2,9 @@
 using System.Net;
 using System.Net.Sockets;
 
-using Core.Common.Buffer;
-using Core.Common.Packet;
 using Google.Protobuf;
 
-namespace Core.Common.Connection
+namespace Core.Common
 {
     public abstract class BaseConnection
     {

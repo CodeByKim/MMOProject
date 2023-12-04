@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Net.Sockets;
 
-using Core.Common.Connection;
-using Core.Common.Packet;
+using Core.Common;
 using Google.Protobuf;
 
-namespace Core.Client.Connection
+namespace Core.Client
 {
     public abstract class Connector<TConnection> : BaseConnection
         where TConnection : BaseConnection

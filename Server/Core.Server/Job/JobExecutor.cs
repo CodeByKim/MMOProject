@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-namespace Core.Server.Job
+namespace Core.Server
 {
     public class JobExecutor
     {

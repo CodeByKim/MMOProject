@@ -1,9 +1,6 @@
 ﻿using System;
 
-using Core.Server.Connection;
-using Core.Server.Server;
-
-namespace Core.Server.Logic
+namespace Core.Server
 {
     internal abstract class AbstractGameLogic<TConnection> : AbstractLogic<TConnection>
         where TConnection : ClientConnection<TConnection>, new()

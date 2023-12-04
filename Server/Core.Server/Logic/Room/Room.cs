@@ -1,10 +1,6 @@
 ﻿using System;
 
-using Core.Server.Connection;
-using Core.Server.Job;
-using Core.Server.Util;
-
-namespace Core.Server.Logic
+namespace Core.Server
 {
     internal class Room<TConnection> : JobExecutor
         where TConnection : ClientConnection<TConnection>, new()

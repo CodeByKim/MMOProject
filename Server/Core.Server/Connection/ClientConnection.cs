@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Concurrent;
-using System.Threading.Tasks;
-using System.Net;
 using System.Net.Sockets;
 
-using Core.Common.Packet;
-using Core.Common.Connection;
-using Core.Server.Server;
-using Core.Server.Util;
+using Core.Common;
 using Google.Protobuf;
 
-namespace Core.Server.Connection
+namespace Core.Server
 {
     public abstract class ClientConnection<TConnection> : BaseConnection
         where TConnection : ClientConnection<TConnection>, new()

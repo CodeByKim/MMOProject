@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Server.Util
+namespace Core.Server
 {
     public static class Logger
     {

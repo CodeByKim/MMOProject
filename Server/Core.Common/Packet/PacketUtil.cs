@@ -2,7 +2,7 @@
 
 using Google.Protobuf;
 
-namespace Core.Common.Packet
+namespace Core.Common
 {
     internal static class PacketUtil
     {

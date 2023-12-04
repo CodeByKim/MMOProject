@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Core.Common.Buffer
+namespace Core.Common
 {
     internal class RingBuffer
     {

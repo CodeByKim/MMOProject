@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Core.Common.Packet;
+using Core.Common;
 using Google.Protobuf;
 using Protocol;
 

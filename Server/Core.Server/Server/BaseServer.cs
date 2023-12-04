@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Net.Sockets;
 
-using Core.Common.Connection;
-using Core.Common.Packet;
-using Core.Server.Connection;
-using Core.Server.Logic;
-using Core.Server.Util;
+using Core.Common;
 using Microsoft.Extensions.ObjectPool;
 
-namespace Core.Server.Server
+namespace Core.Server
 {
     public abstract class BaseServer<TConnection>
         where TConnection : ClientConnection<TConnection>, new()

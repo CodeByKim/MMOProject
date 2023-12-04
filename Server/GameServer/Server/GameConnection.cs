@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Core.Server.Connection;
+using Core.Server;
 
 public class GameConnection : ClientConnection<GameConnection>
 {

@@ -1,9 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 
-using Core.Server.Util;
-
-namespace Core.Server.Connection
+namespace Core.Server
 {
     internal class Acceptor
     {

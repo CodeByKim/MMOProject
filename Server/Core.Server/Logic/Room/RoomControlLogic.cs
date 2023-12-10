@@ -7,7 +7,7 @@ namespace Core.Server
     {
         private List<Room<TConnection>> _rooms;
 
-        internal RoomControlLogic(BaseServer<TConnection> server) : base(server)
+        internal RoomControlLogic(AbstractServer<TConnection> server) : base(server)
         {
             _rooms = new List<Room<TConnection>>();
         }

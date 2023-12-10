@@ -6,7 +6,7 @@ using Microsoft.Extensions.ObjectPool;
 
 namespace Core.Server
 {
-    public abstract class BaseServer<TConnection>
+    public abstract class AbstractServer<TConnection>
         where TConnection : ClientConnection<TConnection>, new()
     {
         private Acceptor _acceptor;
@@ -15,7 +15,7 @@ namespace Core.Server
         private List<AbstractSystemLogic<TConnection>> _systemLogics;
         private List<AbstractGameLogic<TConnection>> _gameLogics;
 
-        public BaseServer()
+        public AbstractServer()
         {
         }
 

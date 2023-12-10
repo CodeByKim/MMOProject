@@ -10,7 +10,7 @@ namespace Core.Server
     public abstract class ClientConnection<TConnection> : AbstractConnection
         where TConnection : ClientConnection<TConnection>, new()
     {
-        private BaseServer<TConnection> _server;
+        private AbstractServer<TConnection> _server;
         private AbstractPacketResolver<TConnection> _packetResolver;
 
         private ConcurrentQueue<Tuple<short, IMessage>> _packetQueue;
@@ -19,7 +19,7 @@ namespace Core.Server
         {
         }
 
-        public void Initialize(Socket socket, BaseServer<TConnection> server)
+        public void Initialize(Socket socket, AbstractServer<TConnection> server)
         {
             Initialize(socket, ServerConfig.Instance.ReceiveBufferSize);
 

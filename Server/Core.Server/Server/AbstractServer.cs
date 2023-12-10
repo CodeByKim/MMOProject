@@ -15,24 +15,21 @@ namespace Core.Server
         private List<AbstractSystemLogic<TConnection>> _systemLogics;
         private List<AbstractGameLogic<TConnection>> _gameLogics;
 
-        public AbstractServer()
-        {
-        }
-
-        public virtual void Initialize(string configPath)
+        public AbstractServer(string configPath)
         {
             ServerConfig.Instance.Load(configPath);
 
             _acceptor = new Acceptor();
             _connectionPool = new DefaultObjectPool<TConnection>(new ConnectionPooledObjectPolicy<TConnection>(),
                                                                  ServerConfig.Instance.ConnectionPoolCount);
-            _acceptor.Initialize();
             _acceptor.OnNewClientHandler = AcceptNewClient;
 
             _systemLogics = new List<AbstractSystemLogic<TConnection>>();
             _gameLogics = new List<AbstractGameLogic<TConnection>>();
 
             _systemLogics.Add(new RoomControlLogic<TConnection>(this));
+
+            OnInitialized();
         }
 
         public void Run()
@@ -74,6 +71,8 @@ namespace Core.Server
         }
 
         public abstract AbstractPacketResolver<TConnection> OnGetPacketResolver();
+
+        protected abstract void OnInitialized();
 
         protected abstract void OnNewConnection(TConnection conn);
 

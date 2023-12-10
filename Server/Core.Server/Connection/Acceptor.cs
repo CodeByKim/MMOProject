@@ -12,12 +12,7 @@ namespace Core.Server
 
         public Acceptor()
         {
-        }
-
-        public void Initialize()
-        {
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
             _endPoint = new IPEndPoint(IPAddress.Any, ServerConfig.Instance.PortNumber);
         }
 

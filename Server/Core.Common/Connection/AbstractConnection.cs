@@ -16,11 +16,13 @@ namespace Core.Common
         private RingBuffer _receiveBuffer;
         private bool _isSending;
         private object _sendLock;
+        private int _isDisconnected;
 
         private List<ArraySegment<byte>> _reservedSendList;
 
         public AbstractConnection()
         {
+            _isDisconnected = 1;
         }
 
         public void Send(short packetId, IMessage packet)
@@ -48,12 +50,20 @@ namespace Core.Common
 
             _sendLock = new object();
             _reservedSendList = new List<ArraySegment<byte>>();
+            _isDisconnected = 0;
 
             _isSending = false;
         }
 
         public void Release()
         {
+            if ( _socket != null )
+            {
+                _socket.Close();
+                _socket = null;
+            }
+
+            _isDisconnected = 1;
             //Logger.Info($"Release Connection: {ID}");
         }
 
@@ -117,9 +127,13 @@ namespace Core.Common
 
         internal void ForceDisconnect(DisconnectReason reason)
         {
+            if (Interlocked.CompareExchange(ref _isDisconnected, 1, 0) == 1)
+                return;
+
             //if (_socket is null)
             //    Logger.Warnning("socket is null...");
             //else
+            if (_socket != null)
                 _socket.Close();
 
             OnDisconnected(this, reason);

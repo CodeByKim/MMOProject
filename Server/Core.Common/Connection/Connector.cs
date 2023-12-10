@@ -11,11 +11,7 @@ namespace Core.Common
     {
         private AbstractPacketResolver<TConnection> _packetResolver;
 
-        public Connector() : base()
-        {
-        }
-
-        public void Initialize(int receiveBufferSize)
+        public Connector(int receiveBufferSize) : base()
         {
             _packetResolver = OnGetPacketResolver();
 

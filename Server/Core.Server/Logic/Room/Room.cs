@@ -18,7 +18,7 @@ namespace Core.Server
 
             // 테스트 코드
             // 나중에 지워야 함
-            for (int i = 0; i <10; i++)
+            for (int i = 0; i <3; i++)
             {
                 var count = i;
                 PushJob(

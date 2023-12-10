@@ -5,13 +5,13 @@ using Core.Common;
 
 public class DummyConnector : Connector<DummyConnector>
 {
-    public DummyConnector()
+    public DummyConnector(int receiveBufferSize) : base(receiveBufferSize)
     {
     }
 
     protected override void OnDisconnected(AbstractConnection conn, DisconnectReason reason)
     {
-        //Logger.Info($"OnDisconnected: {conn.ID}, Reason: {reason}");
+        Console.WriteLine($"OnDisconnected: {conn.ID}, Reason: {reason}");
     }
 
     protected override AbstractPacketResolver<DummyConnector> OnGetPacketResolver()

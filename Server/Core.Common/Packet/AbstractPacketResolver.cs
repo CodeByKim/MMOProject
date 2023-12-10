@@ -5,7 +5,7 @@ using Google.Protobuf;
 
 namespace Core.Common
 {
-    public abstract class AbstractPacketResolver<TConnection> where TConnection : BaseConnection
+    public abstract class AbstractPacketResolver<TConnection> where TConnection : AbstractConnection
     {
         private Dictionary<short, AbstractPacketHandler<TConnection>> _packetHandlers;
 

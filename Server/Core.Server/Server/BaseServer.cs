@@ -15,13 +15,14 @@ namespace Core.Server
         private List<AbstractSystemLogic<TConnection>> _systemLogics;
         private List<AbstractGameLogic<TConnection>> _gameLogics;
 
-        public BaseServer(string configPath)
+        public BaseServer()
         {
-            ServerConfig.Load(configPath);
         }
 
-        public virtual void Initialize()
+        public virtual void Initialize(string configPath)
         {
+            ServerConfig.Instance.Load(configPath);
+
             _acceptor = new Acceptor();
             _connectionPool = new DefaultObjectPool<TConnection>(new ConnectionPooledObjectPolicy<TConnection>(),
                                                                  ServerConfig.Instance.ConnectionPoolCount);

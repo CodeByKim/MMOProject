@@ -6,9 +6,9 @@ using Google.Protobuf;
 
 namespace Core.Common
 {
-    public abstract class BaseConnection
+    public abstract class AbstractConnection
     {
-        public string ID { get; }
+        public string ID { get; private set; }
 
         protected Socket _socket;
 
@@ -18,17 +18,8 @@ namespace Core.Common
 
         private List<ArraySegment<byte>> _reservedSendList;
 
-        public BaseConnection()
+        public AbstractConnection()
         {
-            ID = Guid.NewGuid().ToString();
-
-            _sendLock = new object();
-            _reservedSendList = new List<ArraySegment<byte>>();
-
-            _isSending = false;
-
-            //_receiveBuffer = new RingBuffer(ServerConfig.Instance.ReceiveBufferSize);
-            _receiveBuffer = new RingBuffer(15);
         }
 
         public void Send(short packetId, IMessage packet)
@@ -47,9 +38,17 @@ namespace Core.Common
             }
         }
 
-        public void Initialize(Socket socket)
+        public void Initialize(Socket socket, int receiveBufferSize)
         {
             _socket = socket;
+            _receiveBuffer = new RingBuffer(receiveBufferSize);
+
+            ID = Guid.NewGuid().ToString();
+
+            _sendLock = new object();
+            _reservedSendList = new List<ArraySegment<byte>>();
+
+            _isSending = false;
         }
 
         public void Release()
@@ -169,6 +168,6 @@ namespace Core.Common
 
         protected abstract void OnDispatchPacket(PacketHeader header, ArraySegment<Byte> payload);
 
-        protected abstract void OnDisconnected(BaseConnection conn, DisconnectReason reason);
+        protected abstract void OnDisconnected(AbstractConnection conn, DisconnectReason reason);
     }
 }

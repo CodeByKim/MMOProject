@@ -4,10 +4,10 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        var configPath = "config.json";
+        var configPath = "ServerConfig.json";
 
-        var server = new GameServer(configPath);
-        server.Initialize();
+        var server = new GameServer();
+        server.Initialize(configPath);
         server.Run();
 
         Console.ReadLine();

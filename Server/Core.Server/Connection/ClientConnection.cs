@@ -7,7 +7,7 @@ using Google.Protobuf;
 
 namespace Core.Server
 {
-    public abstract class ClientConnection<TConnection> : BaseConnection
+    public abstract class ClientConnection<TConnection> : AbstractConnection
         where TConnection : ClientConnection<TConnection>, new()
     {
         private BaseServer<TConnection> _server;
@@ -21,7 +21,7 @@ namespace Core.Server
 
         public void Initialize(Socket socket, BaseServer<TConnection> server)
         {
-            Initialize(socket);
+            Initialize(socket, ServerConfig.Instance.ReceiveBufferSize);
 
             _server = server;
 
@@ -61,7 +61,7 @@ namespace Core.Server
             _packetQueue.Enqueue(packetBundle);
         }
 
-        protected override void OnDisconnected(BaseConnection conn, DisconnectReason reason)
+        protected override void OnDisconnected(AbstractConnection conn, DisconnectReason reason)
         {
             _server.Disconnect(conn as TConnection, reason);
         }

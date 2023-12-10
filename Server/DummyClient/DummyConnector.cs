@@ -10,7 +10,7 @@ public class DummyConnector : Connector<DummyConnector>
     {
     }
 
-    protected override void OnDisconnected(BaseConnection conn, DisconnectReason reason)
+    protected override void OnDisconnected(AbstractConnection conn, DisconnectReason reason)
     {
         //Logger.Info($"OnDisconnected: {conn.ID}, Reason: {reason}");
     }

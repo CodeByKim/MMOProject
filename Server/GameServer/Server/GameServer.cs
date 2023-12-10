@@ -5,13 +5,13 @@ using Core.Server;
 
 internal class GameServer : BaseServer<GameConnection>
 {
-    public GameServer(string configPath) : base(configPath)
+    public GameServer() : base()
     {
     }
 
-    public override void Initialize()
+    public override void Initialize(string configPath)
     {
-        base.Initialize();
+        base.Initialize(configPath);
 
         Logger.Info("initialize server...");
     }

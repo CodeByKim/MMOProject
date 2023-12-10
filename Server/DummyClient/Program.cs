@@ -10,6 +10,7 @@ internal class Program
         var portNumber = 8888;
 
         var connector = new DummyConnector();
+        connector.Initialize("ClientConfig.json");
 
         await connector.ConnectAsync(ip, portNumber);
         Console.WriteLine("Success Connect");

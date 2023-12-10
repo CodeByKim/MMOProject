@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Concurrent;
 
 namespace Core.Server
 {
     internal class RoomControlLogic<TConnection> : AbstractSystemLogic<TConnection>
         where TConnection : ClientConnection<TConnection>, new()
     {
-        private List<Room<TConnection>> _rooms;
+        private ConcurrentBag<Room<TConnection>> _rooms;
 
         internal RoomControlLogic(AbstractServer<TConnection> server) : base(server)
         {
-            _rooms = new List<Room<TConnection>>();
+            _rooms = new ConcurrentBag<Room<TConnection>>();
         }
 
         public override void OnInitialize()
@@ -42,7 +43,11 @@ namespace Core.Server
              * 임시로 첫번째 꺼내온다.
              */
             var room = _rooms.First();
-            room.Add(conn);
+            room.PushJob(
+                () =>
+                {
+                    room.Add(conn);
+                });
         }
     }
 }

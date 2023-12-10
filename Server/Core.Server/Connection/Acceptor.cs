@@ -3,15 +3,16 @@ using System.Net.Sockets;
 
 namespace Core.Server
 {
-    internal class Acceptor
+    internal class Acceptor<TConnection>
+        where TConnection : ClientConnection<TConnection>, new()
     {
-        public Action<Socket> OnNewClientHandler { get; set; }
-
         private Socket _socket;
         private IPEndPoint _endPoint;
+        private AbstractServer<TConnection> _server;
 
-        public Acceptor()
+        public Acceptor(AbstractServer<TConnection> server)
         {
+            _server = server;
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             _endPoint = new IPEndPoint(IPAddress.Any, ServerConfig.Instance.PortNumber);
         }
@@ -26,7 +27,7 @@ namespace Core.Server
             {
                 var clientSocket = await _socket.AcceptAsync();
 
-                OnNewClientHandler(clientSocket);
+                _server.AcceptNewClient(clientSocket);
             }
         }
     }

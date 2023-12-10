@@ -11,12 +11,12 @@ namespace Core.Common
     {
         private AbstractPacketResolver<TConnection> _packetResolver;
 
-        public Connector(int receiveBufferSize) : base()
+        public Connector(int receiveBufferSize) : base(receiveBufferSize)
         {
             _packetResolver = OnGetPacketResolver();
 
             var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            Initialize(socket, receiveBufferSize);
+            Initialize(socket);
         }
 
         public async Task ConnectAsync(string ip, int portNumber)

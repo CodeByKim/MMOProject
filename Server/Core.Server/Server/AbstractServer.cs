@@ -9,7 +9,7 @@ namespace Core.Server
     public abstract class AbstractServer<TConnection>
         where TConnection : ClientConnection<TConnection>, new()
     {
-        private Acceptor _acceptor;
+        private Acceptor<TConnection> _acceptor;
         private DefaultObjectPool<TConnection> _connectionPool;
 
         private List<AbstractSystemLogic<TConnection>> _systemLogics;
@@ -19,11 +19,9 @@ namespace Core.Server
         {
             ServerConfig.Instance.Load(configPath);
 
-            _acceptor = new Acceptor();
+            _acceptor = new Acceptor<TConnection>(this);
             _connectionPool = new DefaultObjectPool<TConnection>(new ConnectionPooledObjectPolicy<TConnection>(),
                                                                  ServerConfig.Instance.ConnectionPoolCount);
-            _acceptor.OnNewClientHandler = AcceptNewClient;
-
             _systemLogics = new List<AbstractSystemLogic<TConnection>>();
             _gameLogics = new List<AbstractGameLogic<TConnection>>();
 

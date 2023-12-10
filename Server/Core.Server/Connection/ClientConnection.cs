@@ -15,13 +15,13 @@ namespace Core.Server
 
         private ConcurrentQueue<Tuple<short, IMessage>> _packetQueue;
 
-        public ClientConnection() : base()
+        public ClientConnection() : base(ServerConfig.Instance.ReceiveBufferSize)
         {
         }
 
         public void Initialize(Socket socket, AbstractServer<TConnection> server)
         {
-            Initialize(socket, ServerConfig.Instance.ReceiveBufferSize);
+            Initialize(socket);
 
             _server = server;
 

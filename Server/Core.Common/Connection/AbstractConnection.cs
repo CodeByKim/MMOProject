@@ -20,9 +20,15 @@ namespace Core.Common
 
         private List<ArraySegment<byte>> _reservedSendList;
 
-        public AbstractConnection()
+        public AbstractConnection(int receiveBufferSize)
         {
+            ID = Guid.NewGuid().ToString();
+
+            _socket = null;
+            _receiveBuffer = new RingBuffer(receiveBufferSize);
             _isDisconnected = 1;
+            _sendLock = new object();
+            _reservedSendList = new List<ArraySegment<byte>>();
         }
 
         public void Send(short packetId, IMessage packet)
@@ -41,29 +47,29 @@ namespace Core.Common
             }
         }
 
-        public void Initialize(Socket socket, int receiveBufferSize)
+        public void Initialize(Socket socket)
         {
             _socket = socket;
-            _receiveBuffer = new RingBuffer(receiveBufferSize);
 
-            ID = Guid.NewGuid().ToString();
-
-            _sendLock = new object();
-            _reservedSendList = new List<ArraySegment<byte>>();
+            _receiveBuffer.Clear();
+            _reservedSendList.Clear();
             _isDisconnected = 0;
-
             _isSending = false;
         }
 
         public void Release()
         {
-            if ( _socket != null )
+            if (_socket != null)
             {
                 _socket.Close();
                 _socket = null;
             }
 
+            _receiveBuffer.Clear();
+            _reservedSendList.Clear();
             _isDisconnected = 1;
+            _isSending = false;
+
             //Logger.Info($"Release Connection: {ID}");
         }
 

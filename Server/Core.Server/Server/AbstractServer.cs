@@ -64,6 +64,7 @@ namespace Core.Server
         {
             var conn = _connectionPool.Get();
             conn.Initialize(socket, this);
+            conn.SetConnect();
 
             return conn;
         }

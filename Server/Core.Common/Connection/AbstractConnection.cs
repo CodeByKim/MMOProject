@@ -12,11 +12,11 @@ namespace Core.Common
         public string ID { get; private set; }
 
         protected Socket _socket;
+        protected int _isDisconnected;
 
         private RingBuffer _receiveBuffer;
         private bool _isSending;
         private object _sendLock;
-        private int _isDisconnected;
 
         private List<ArraySegment<byte>> _reservedSendList;
 
@@ -29,6 +29,11 @@ namespace Core.Common
             _isDisconnected = 1;
             _sendLock = new object();
             _reservedSendList = new List<ArraySegment<byte>>();
+        }
+
+        public AbstractConnection(int receiveBufferSize, Socket socket) : this(receiveBufferSize)
+        {
+            _socket = socket;
         }
 
         public void Send(short packetId, IMessage packet)
@@ -53,8 +58,12 @@ namespace Core.Common
 
             _receiveBuffer.Clear();
             _reservedSendList.Clear();
-            _isDisconnected = 0;
             _isSending = false;
+        }
+
+        public void SetConnect()
+        {
+            Interlocked.Exchange(ref _isDisconnected, 0);
         }
 
         public void Release()

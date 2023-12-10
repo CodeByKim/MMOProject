@@ -44,19 +44,13 @@ namespace Core.Server
             }
         }
 
-        protected override void OnDispatchPacket(PacketHeader header, ArraySegment<byte> payload)
+        protected override IMessage OnResolvePacket(short packetId)
         {
-            var conn = this as TConnection;
-            var packetId = header.PacketId;
-            var packet = _packetResolver.OnResolvePacket(conn, packetId);
-            if (packet is null)
-            {
-                Logger.Error($"Not Found Packet Handler, PacketId: {packetId}");
-                return;
-            }
+            return _packetResolver.OnResolvePacket(packetId);
+        }
 
-            packet.MergeFrom(payload);
-
+        protected override void OnDispatchPacket(short packetId, IMessage packet)
+        {
             var packetBundle = new Tuple<short, IMessage>(packetId, packet);
             _packetQueue.Enqueue(packetBundle);
         }

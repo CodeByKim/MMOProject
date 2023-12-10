@@ -9,20 +9,20 @@ namespace Core.Common
     public abstract class Connector<TConnection> : AbstractConnection
         where TConnection : AbstractConnection
     {
-        //private AbstractPacketResolver<TConnection> _packetResolver;
+        private AbstractPacketResolver<TConnection> _packetResolver;
 
         public Connector() : base()
         {
         }
 
-        public void Initialize(string configPath)
+        public void Initialize(int receiveBufferSize)
         {
             //ClientConfig.Instance.Load(configPath);
 
-            //_packetResolver = OnGetPacketResolver();
+            _packetResolver = OnGetPacketResolver();
 
-            //var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            //Initialize(socket, ClientConfig.Instance.ReceiveBufferSize);
+            var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Initialize(socket, receiveBufferSize);
         }
 
         public async Task ConnectAsync(string ip, int portNumber)
@@ -32,19 +32,15 @@ namespace Core.Common
             ReceiveAsync();
         }
 
-        protected override void OnDispatchPacket(PacketHeader header, ArraySegment<byte> payload)
+        protected override IMessage OnResolvePacket(short packetId)
         {
-            //var conn = this as TConnection;
-            //var packetId = header.PacketId;
-            //var packet = _packetResolver.OnResolvePacket(conn, packetId);
-            //if (packet is null)
-            //{
-            //    //Logger.Error($"Not Found Packet Handler, PacketId: {packetId}");
-            //    return;
-            //}
+            return _packetResolver.OnResolvePacket(packetId);
+        }
 
-            //packet.MergeFrom(payload);
-            //_packetResolver.Execute(conn, packetId, packet);
+        protected override void OnDispatchPacket(short packetId, IMessage packet)
+        {
+            var conn = this as TConnection;
+            _packetResolver.Execute(conn, packetId, packet);
         }
 
         protected abstract AbstractPacketResolver<TConnection> OnGetPacketResolver();

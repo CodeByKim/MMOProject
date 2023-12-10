@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.Net;
 using System.Net.Sockets;
 
@@ -93,10 +94,10 @@ namespace Core.Common
                 if (!TryGetHeader(out header))
                     return;
 
-                if (_receiveBuffer.UseSize < header.Payload)
+                if (_receiveBuffer.UseSize < header.PayloadSize)
                     return;
 
-                var packetSize = PacketHeader.HeaderSize + header.Payload;
+                var packetSize = PacketHeader.HeaderSize + header.PayloadSize;
                 var packetBuffer = _receiveBuffer.Peek(packetSize);
                 if (packetBuffer.Array is null)
                 {
@@ -106,8 +107,9 @@ namespace Core.Common
 
                 var payload = new ArraySegment<byte>(packetBuffer.Array,
                                                      packetBuffer.Offset + PacketHeader.HeaderSize,
-                                                     header.Payload);
-                OnDispatchPacket(header, payload);
+                                                     header.PayloadSize);
+                var packet = ParsePacket(header, payload);
+                OnDispatchPacket(header.PacketId, packet);
 
                 _receiveBuffer.FinishRead(packetSize);
             }
@@ -166,7 +168,22 @@ namespace Core.Common
             return true;
         }
 
-        protected abstract void OnDispatchPacket(PacketHeader header, ArraySegment<Byte> payload);
+        private IMessage ParsePacket(PacketHeader header, ArraySegment<byte> payload)
+        {
+            var packet = OnResolvePacket(header.PacketId);
+            if (packet is null)
+            {
+                //Logger.Error($"Not Found Packet Handler, PacketId: {packetId}");
+                return null;
+            }
+
+            packet.MergeFrom(payload);
+            return packet;
+        }
+
+        protected abstract IMessage OnResolvePacket(short packetId);
+
+        protected abstract void OnDispatchPacket(short packetId, IMessage packet);
 
         protected abstract void OnDisconnected(AbstractConnection conn, DisconnectReason reason);
     }

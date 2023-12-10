@@ -15,7 +15,7 @@ public class GamePacketResolver : AbstractPacketResolver<DummyConnector>
         handlers.Add((short)PacketId.PktEchoResult, new PktEchoResultHandler());
     }
 
-    public override IMessage? OnResolvePacket(DummyConnector conn, short packetId)
+    public override IMessage? OnResolvePacket(short packetId)
     {
         if (!ContainHandler(packetId))
             return null;

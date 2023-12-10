@@ -10,12 +10,12 @@ namespace Core.Common
         public static readonly short HeaderSize = 4;
 
         public short PacketId { get; private set; }
-        public short Payload { get; private set; }
+        public short PayloadSize { get; private set; }
 
         public PacketHeader(IMessage packet, short packetId)
         {
             PacketId = packetId;
-            Payload = (short)packet.CalculateSize();
+            PayloadSize = (short)packet.CalculateSize();
         }
 
         internal void CopyTo(RingBuffer buffer)
@@ -23,7 +23,7 @@ namespace Core.Common
             var data = buffer.Peek(HeaderSize);
 
             PacketId = BitConverter.ToInt16(data.Array, data.Offset);
-            Payload = BitConverter.ToInt16(data.Array, data.Offset + sizeof(short));
+            PayloadSize = BitConverter.ToInt16(data.Array, data.Offset + sizeof(short));
         }
     }
 }

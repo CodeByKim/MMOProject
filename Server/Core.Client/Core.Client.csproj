@@ -12,8 +12,4 @@
     <ProjectReference Include="..\Core.Common\Core.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Client\" />
-  </ItemGroup>
-
 </Project>

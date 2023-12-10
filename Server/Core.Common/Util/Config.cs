@@ -5,10 +5,6 @@ namespace Core.Common
 {
     public abstract class Config<T> where T : new()
     {
-        public int PortNumber { get; set; } = 10000;
-
-        public int ReceiveBufferSize { get; set; } = 1024 * 4;
-
         private static T _instance;
         public static T Instance
         {

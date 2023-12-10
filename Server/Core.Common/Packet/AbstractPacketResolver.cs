@@ -26,7 +26,7 @@ namespace Core.Common
             handler.OnHandle(conn, packet);
         }
 
-        public abstract IMessage OnResolvePacket(TConnection conn, short packetId);
+        public abstract IMessage OnResolvePacket(short packetId);
 
         protected abstract void OnRegisterPacketHandler(Dictionary<short, AbstractPacketHandler<TConnection>> handlers);
     }

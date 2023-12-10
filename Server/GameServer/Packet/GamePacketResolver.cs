@@ -15,7 +15,7 @@ public class GamePacketResolver : AbstractPacketResolver<GameConnection>
         handlers.Add((short)PacketId.PktEcho, new PktEchoHandler());
     }
 
-    public override IMessage? OnResolvePacket(GameConnection conn, short packetId)
+    public override IMessage? OnResolvePacket(short packetId)
     {
         if (!ContainHandler(packetId))
             return null;

@@ -4,12 +4,10 @@ using Core.Common;
 
 namespace Core.Client
 {
-    public abstract class ClientConnector<TConnection> : Connector<TConnection>
-        where TConnection : ClientConnector<TConnection>
+    public class ClientConnector : Connector<ClientConnector>
     {
-        public void Initialize(string configPath)
+        protected override void OnDisconnected(AbstractConnection conn, DisconnectReason reason)
         {
-            ClientConfig.Instance.Load(configPath);
         }
     }
 }

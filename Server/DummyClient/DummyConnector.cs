@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Core.Client;
 using Core.Common;
 
 public class DummyConnector : Connector<DummyConnector>

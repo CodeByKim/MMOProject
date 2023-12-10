@@ -17,8 +17,6 @@ namespace Core.Common
 
         public void Initialize(int receiveBufferSize)
         {
-            //ClientConfig.Instance.Load(configPath);
-
             _packetResolver = OnGetPacketResolver();
 
             var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);

@@ -26,8 +26,6 @@ namespace Core.Server
             _gameLogics = new List<AbstractGameLogic<TConnection>>();
 
             _systemLogics.Add(new RoomControlLogic<TConnection>(this));
-
-            OnInitialized();
         }
 
         public void Run()
@@ -70,8 +68,6 @@ namespace Core.Server
         }
 
         public abstract AbstractPacketResolver<TConnection> OnGetPacketResolver();
-
-        protected abstract void OnInitialized();
 
         protected abstract void OnNewConnection(TConnection conn);
 

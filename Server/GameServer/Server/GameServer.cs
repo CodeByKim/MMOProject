@@ -14,11 +14,6 @@ internal class GameServer : AbstractServer<GameConnection>
         return new GamePacketResolver();
     }
 
-    protected override void OnInitialized()
-    {
-        Logger.Info("initialize server...");
-    }
-
     protected override void OnNewConnection(GameConnection conn)
     {
         Logger.Info($"OnNewConnection: {conn.ID}");

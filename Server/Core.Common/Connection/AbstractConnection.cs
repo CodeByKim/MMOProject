@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data.Common;
-using System.Net;
 using System.Net.Sockets;
 
 using Google.Protobuf;
@@ -36,6 +34,19 @@ namespace Core.Common
             _socket = socket;
         }
 
+        public void Run(Socket socket)
+        {
+            _socket = socket;
+
+            _receiveBuffer.Clear();
+            _reservedSendList.Clear();
+            _isSending = false;
+
+            SetConnect();
+
+            ReceiveAsync();
+        }
+
         public void Send(short packetId, IMessage packet)
         {
             var header = new PacketHeader(packet, packetId);
@@ -52,21 +63,12 @@ namespace Core.Common
             }
         }
 
-        public void Initialize(Socket socket)
-        {
-            _socket = socket;
-
-            _receiveBuffer.Clear();
-            _reservedSendList.Clear();
-            _isSending = false;
-        }
-
         public void SetConnect()
         {
             Interlocked.Exchange(ref _isDisconnected, 0);
         }
 
-        public void Release()
+        public void OnReturnedToPool()
         {
             if (_socket != null)
             {

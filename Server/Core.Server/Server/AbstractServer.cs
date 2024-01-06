@@ -20,7 +20,7 @@ namespace Core.Server
             ServerConfig.Instance.Load(configPath);
 
             _acceptor = new Acceptor<TConnection>(this);
-            _connectionPool = new DefaultObjectPool<TConnection>(new ConnectionPooledObjectPolicy<TConnection>(),
+            _connectionPool = new DefaultObjectPool<TConnection>(new ConnectionPooledObjectPolicy<TConnection>(this),
                                                                  ServerConfig.Instance.ConnectionPoolCount);
             _systemLogics = new List<AbstractSystemLogic<TConnection>>();
             _gameLogics = new List<AbstractGameLogic<TConnection>>();
@@ -41,14 +41,13 @@ namespace Core.Server
 
         internal void AcceptNewClient(Socket socket)
         {
-            var conn = AllocConnection(socket);
+            var conn = AllocConnection();
+            conn.Run(socket);
 
             foreach (var logic in _systemLogics)
                 logic.OnNewConnection(conn);
 
             OnNewConnection(conn);
-
-            conn.ReceiveAsync();
         }
 
         internal void Disconnect(TConnection conn, DisconnectReason reason)
@@ -58,11 +57,10 @@ namespace Core.Server
             _connectionPool.Return(conn);
         }
 
-        private TConnection AllocConnection(Socket socket)
+        private TConnection AllocConnection()
         {
             var conn = _connectionPool.Get();
-            conn.Initialize(socket, this);
-            conn.SetConnect();
+            conn.OnTakeFromPool(this);
 
             return conn;
         }

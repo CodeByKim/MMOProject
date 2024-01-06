@@ -7,6 +7,13 @@ namespace Core.Server
     public class ConnectionPooledObjectPolicy<TConnection> : IPooledObjectPolicy<TConnection>
         where TConnection : ClientConnection<TConnection>, new()
     {
+        private AbstractServer<TConnection> m_server;
+
+        public ConnectionPooledObjectPolicy(AbstractServer<TConnection> server)
+        {
+            m_server = server;
+        }
+
         public TConnection Create()
         {
             var connection = new TConnection();
@@ -15,7 +22,7 @@ namespace Core.Server
 
         public bool Return(TConnection conn)
         {
-            conn.Release();
+            conn.OnReturnedToPool();
             return true;
         }
     }

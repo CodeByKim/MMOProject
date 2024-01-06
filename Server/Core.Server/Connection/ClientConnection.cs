@@ -17,17 +17,17 @@ namespace Core.Server
 
         public ClientConnection() : base(ServerConfig.Instance.ReceiveBufferSize)
         {
+            _packetQueue = new ConcurrentQueue<Tuple<short, IMessage>>();
         }
 
-        public void Initialize(Socket socket, AbstractServer<TConnection> server)
+        public void OnTakeFromPool(AbstractServer<TConnection> server)
         {
-            Initialize(socket);
-
             _server = server;
 
-            _packetResolver = _server.OnGetPacketResolver();
+            if (_packetResolver == null)
+                _packetResolver = _server.OnGetPacketResolver();
 
-            _packetQueue = new ConcurrentQueue<Tuple<short, IMessage>>();
+            _packetQueue.Clear();
         }
 
         internal void ConsumePacket()

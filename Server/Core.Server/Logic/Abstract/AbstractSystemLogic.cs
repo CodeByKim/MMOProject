@@ -2,7 +2,7 @@
 
 namespace Core.Server
 {
-    internal abstract class AbstractSystemLogic<TConnection> : AbstractLogic<TConnection>
+    public abstract class AbstractSystemLogic<TConnection> : AbstractLogic<TConnection>
         where TConnection : ClientConnection<TConnection>, new()
     {
         public AbstractSystemLogic(AbstractServer<TConnection> server) : base(server)

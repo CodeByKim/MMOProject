@@ -2,7 +2,7 @@
 
 namespace Core.Server
 {
-    internal abstract class AbstractLogic<TConnection>
+    public abstract class AbstractLogic<TConnection>
         where TConnection : ClientConnection<TConnection>, new()
     {
         protected AbstractServer<TConnection> _server;

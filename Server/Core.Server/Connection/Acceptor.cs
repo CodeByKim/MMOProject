@@ -3,7 +3,7 @@ using System.Net.Sockets;
 
 namespace Core.Server
 {
-    internal class Acceptor<TConnection>
+    public class Acceptor<TConnection>
         where TConnection : ClientConnection<TConnection>, new()
     {
         private Socket _socket;

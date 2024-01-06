@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using Core.Common;
+using Microsoft.Extensions.ObjectPool;
 
 namespace Core.Server
 {
@@ -26,8 +27,23 @@ namespace Core.Server
 
         public void Run()
         {
+            if (_packetResolver is null)
+            {
+                Logger.Error("PacketResolver가 설정되지 않음");
+                return;
+            }
+
             _server = new TServer();
-            _server.PacketResolver = _packetResolver;
+            var acceptor = new Acceptor<TConnection>(_server);
+            var connectionPool = new DefaultObjectPool<TConnection>(
+                new ConnectionPooledObjectPolicy<TConnection>(_server),
+                ServerConfig.Instance.ConnectionPoolCount);
+
+            var systemLogics = new List<AbstractSystemLogic<TConnection>>();
+            systemLogics.Add(new RoomControlLogic<TConnection>(_server));
+
+            _server.Initialize(
+                acceptor,connectionPool, _packetResolver, systemLogics);
 
             _server.Run();
         }

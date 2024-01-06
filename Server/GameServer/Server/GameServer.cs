@@ -3,7 +3,7 @@
 using Core.Common;
 using Core.Server;
 
-internal class GameServer : AbstractServer<GameConnection>
+public class GameServer : AbstractServer<GameConnection>
 {
     public GameServer()
     {

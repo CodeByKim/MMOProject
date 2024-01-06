@@ -15,10 +15,10 @@ namespace Core.Server
         private List<AbstractSystemLogic<TConnection>> _systemLogics;
         private List<AbstractGameLogic<TConnection>> _gameLogics;
 
-        public AbstractServer(string configPath)
-        {
-            ServerConfig.Instance.Load(configPath);
+        public AbstractPacketResolver<TConnection> PacketResolver { get; internal set; }
 
+        public AbstractServer()
+        {
             _acceptor = new Acceptor<TConnection>(this);
             _connectionPool = new DefaultObjectPool<TConnection>(new ConnectionPooledObjectPolicy<TConnection>(this),
                                                                  ServerConfig.Instance.ConnectionPoolCount);
@@ -64,8 +64,6 @@ namespace Core.Server
 
             return conn;
         }
-
-        public abstract AbstractPacketResolver<TConnection> OnGetPacketResolver();
 
         protected abstract void OnNewConnection(TConnection conn);
 

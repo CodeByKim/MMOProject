@@ -25,7 +25,7 @@ namespace Core.Server
             _server = server;
 
             if (_packetResolver == null)
-                _packetResolver = _server.OnGetPacketResolver();
+                _packetResolver = _server.PacketResolver;
 
             _packetQueue.Clear();
         }

@@ -1,11 +1,15 @@
 ﻿using System;
 
+using Core.Server;
+
 internal class Program
 {
     private static void Main(string[] args)
     {
-        var server = new GameServer("ServerConfig.json");
-        server.Run();
+        var bootstrap = new ServerBootstrap<GameServer, GameConnection>();
+        bootstrap.LoadConfig("ServerConfig.json")
+            .SetPacketResolver(new GamePacketResolver())
+            .Run();
 
         Console.ReadLine();
     }

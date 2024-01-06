@@ -12,7 +12,6 @@ namespace Core.Server
     {
         private AbstractServer<TConnection> _server;
         private AbstractPacketResolver<TConnection> _packetResolver;
-
         private ConcurrentQueue<Tuple<short, IMessage>> _packetQueue;
 
         public ClientConnection() : base(ServerConfig.Instance.ReceiveBufferSize)
@@ -20,13 +19,14 @@ namespace Core.Server
             _packetQueue = new ConcurrentQueue<Tuple<short, IMessage>>();
         }
 
-        public void OnTakeFromPool(AbstractServer<TConnection> server)
+        public void Initialize(AbstractServer<TConnection> server)
         {
             _server = server;
+            _packetResolver = _server.PacketResolver;
+        }
 
-            if (_packetResolver == null)
-                _packetResolver = _server.PacketResolver;
-
+        public void OnTakeFromPool()
+        {
             _packetQueue.Clear();
         }
 

@@ -21,21 +21,19 @@ namespace Core.Server
         {
         }
 
-        public void Initialize(
-            Acceptor<TConnection> acceptor,
-            DefaultObjectPool<TConnection> connectionPool,
-            AbstractPacketResolver<TConnection> packetResolver,
-            List<AbstractSystemLogic<TConnection>> systemLogics)
+        public void Initialize(AbstractPacketResolver<TConnection> packetResolver)
         {
-            _acceptor = acceptor;
-            _connectionPool = connectionPool;
             PacketResolver = packetResolver;
+
+            _acceptor = new Acceptor<TConnection>(this);
+            _connectionPool = new DefaultObjectPool<TConnection>(
+                new ConnectionPooledObjectPolicy<TConnection>(this),
+                ServerConfig.Instance.ConnectionPoolCount);
 
             _systemLogics = new List<AbstractSystemLogic<TConnection>>();
             _gameLogics = new List<AbstractGameLogic<TConnection>>();
 
-            foreach (var logic in systemLogics)
-                _systemLogics.Add(logic);
+            _systemLogics.Add(new RoomControlLogic<TConnection>(this));
         }
 
         public void Run()
@@ -70,7 +68,7 @@ namespace Core.Server
         private TConnection AllocConnection()
         {
             var conn = _connectionPool.Get();
-            conn.OnTakeFromPool(this);
+            conn.OnTakeFromPool();
 
             return conn;
         }

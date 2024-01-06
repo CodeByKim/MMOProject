@@ -34,16 +34,18 @@ namespace Core.Server
             }
 
             _server = new TServer();
+
             var acceptor = new Acceptor<TConnection>(_server);
             var connectionPool = new DefaultObjectPool<TConnection>(
                 new ConnectionPooledObjectPolicy<TConnection>(_server),
                 ServerConfig.Instance.ConnectionPoolCount);
-
-            var systemLogics = new List<AbstractSystemLogic<TConnection>>();
-            systemLogics.Add(new RoomControlLogic<TConnection>(_server));
+            var systemLogics = new List<AbstractSystemLogic<TConnection>>()
+            {
+                new RoomControlLogic<TConnection>(_server)
+            };
 
             _server.Initialize(
-                acceptor,connectionPool, _packetResolver, systemLogics);
+                acceptor, connectionPool, _packetResolver, systemLogics);
 
             _server.Run();
         }
